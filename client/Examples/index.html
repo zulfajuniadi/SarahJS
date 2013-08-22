@@ -165,8 +165,8 @@
             </div>
         </form>
     </script>
-    <script src="js/loader.js">
-        var root = '/js/';
+    <script src="js/loader.min.js">
+        var root = 'js/';
         var libraries = [];
         if(window.$ === undefined) {
             libraries.push( root + 'vendor/zepto.js');
@@ -177,7 +177,7 @@
         if(window._ === undefined) {
             libraries.push( root + 'vendor/lodash.js');
         }
-        ljs.load(libraries, root + 'libraries.js', root + 'sarah.js', root + 'app.js', function(){
+        ljs.load(libraries, '../sarah.min.js', root + 'app.js', function(){
             Sarah.Configure();
         });
     </script>
