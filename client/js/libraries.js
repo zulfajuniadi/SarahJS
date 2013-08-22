@@ -1,48 +1,22 @@
-Function.prototype.isFunction = true;
-
 var Sarah = Sarah || {};
 
-Sarah.Utils = {
-    genId: function() {
+;
+(function(Handlebars, Sarah) {
+
+    var Sarah = Sarah || {};
+    var Utils = Sarah.Utils = {};
+    var Cache = Sarah.Cache = {};
+
+    Function.prototype.isFunction = true;
+
+    Utils.genId = function() {
         function S4() {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         }
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
-}
 
-Sarah.Cache = {};
-
-/**
- * DEVELOPED BY
- * GIL LOPES BUENO
- * gilbueno.mail@gmail.com
- *
- * WORKS WITH:
- * IE 9+, FF 4+, SF 5+, WebKit, CH 7+, OP 12+, BESEN, Rhino 1.7+
- *
- * FORK:
- * https://github.com/melanke/Watch.JS
- */
-
-"use strict";
-(function(factory) {
-    if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like enviroments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(factory);
-    } else {
-        // Browser globals
-        window.WatchJS = factory();
-        window.watch = window.WatchJS.watch;
-        window.unwatch = window.WatchJS.unwatch;
-        window.callWatchers = window.WatchJS.callWatchers;
-    }
-}(function() {
+    // https://github.com/melanke/Watch.JS
 
     var WatchJS = {
         noMore: false
@@ -80,7 +54,6 @@ Sarah.Cache = {};
                 }
             }
         }
-
         return {
             added: aplus,
             removed: bplus
@@ -88,7 +61,6 @@ Sarah.Cache = {};
     };
 
     var clone = function(obj) {
-
         if (null == obj || "object" != typeof obj) {
             return obj;
         }
@@ -100,7 +72,6 @@ Sarah.Cache = {};
         }
 
         return copy;
-
     }
 
     var defineGetAndSet = function(obj, propName, getter, setter) {
@@ -143,19 +114,13 @@ Sarah.Cache = {};
         } else {
             watchOne.apply(this, arguments);
         }
-
     };
 
-
     var watchAll = function(obj, watcher, level, addNRemove) {
-
         if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //accepts only objects and array (not string)
             return;
         }
-
         var props = [];
-
-
         if (isArray(obj)) {
             for (var prop = 0; prop < obj.length; prop++) { //for each item if obj is an array
                 props.push(prop); //put in the props
@@ -165,11 +130,8 @@ Sarah.Cache = {};
                 props.push(prop2); //put in the props
             }
         }
-
         watchMany(obj, props, watcher, level, addNRemove); //watch all itens of the props
     };
-
-
     var watchMany = function(obj, props, watcher, level, addNRemove) {
 
         if ((typeof obj == "string") || (!(obj instanceof Object) && !isArray(obj))) { //accepts only objects and array (not string)
@@ -179,7 +141,6 @@ Sarah.Cache = {};
         for (var prop in props) { //watch each attribute of "props" if is an object
             watchOne(obj, props[prop], watcher, level, addNRemove);
         }
-
     };
 
     var watchOne = function(obj, prop, watcher, level, addNRemove) {
@@ -398,61 +359,25 @@ Sarah.Cache = {};
 
     };
 
-    setInterval(loop, 50);
+    setInterval(loop, 16);
 
     WatchJS.watch = watch;
     WatchJS.unwatch = unwatch;
     WatchJS.callWatchers = callWatchers;
 
-    return WatchJS;
+    Utils.watch = WatchJS.watch;
 
-}));
+    var cache = Cache.pubsub || {}; //check for "c_" cache for unit testing
 
-(function(u) {
-
-    // the topic/subscription hash
-    var cache = u.Cache.pubsub || {}; //check for "c_" cache for unit testing
-
-    u.Utils.publish = function( /* String */ topic, /* Array? */ args) {
-        // summary:
-        //      Publish some data on a named topic.
-        // topic: String
-        //      The channel to publish on
-        // args: Array?
-        //      The data to publish. Each array item is converted into an ordered
-        //      arguments on the subscribed functions.
-        //
-        // example:
-        //      Publish stuff on '/some/topic'. Anything subscribed will be called
-        //      with a function signature like: function(a,b,c){ ... }
-        //
-        //      publish("/some/topic", ["a","b","c"]);
-
+    Utils.publish = function( /* String */ topic, /* Array? */ args) {
         var subs = cache[topic],
             len = subs ? subs.length : 0;
-
-        //can change loop or reverse array if the order matters
         while (len--) {
-            subs[len].apply(u.Utils, [args] || []);
+            subs[len].apply(Utils, [args] || []);
         }
     };
 
-    u.Utils.subscribe = function( /* String */ topic, /* Function */ callback) {
-        // summary:
-        //      Register a callback on a named topic.
-        // topic: String
-        //      The channel to subscribe to
-        // callback: Function
-        //      The handler event. Anytime something is publish'ed on a
-        //      subscribed channel, the callback will be called with the
-        //      published array as ordered arguments.
-        //
-        // returns: Array
-        //      A handle which can be used to unsubscribe this particular subscription.
-        //
-        // example:
-        //      subscribe("/some/topic", function(a, b, c){ /* handle data */ });
-
+    Utils.subscribe = function( /* String */ topic, /* Function */ callback) {
         if (!cache[topic]) {
             cache[topic] = [];
         }
@@ -460,15 +385,7 @@ Sarah.Cache = {};
         return [topic, callback]; // Array
     };
 
-    u.Utils.unsubscribe = function( /* Array */ handle, /* Function? */ callback) {
-        // summary:
-        //      Disconnect a subscribed function for a topic.
-        // handle: Array
-        //      The return value from a subscribe call.
-        // example:
-        //      var handle = subscribe("/some/topic", function(){});
-        //      unsubscribe(handle);
-
+    Utils.unsubscribe = function( /* Array */ handle, /* Function? */ callback) {
         var subs = cache[callback ? handle : handle[0]],
             callback = callback || handle[1],
             len = subs ? subs.length : 0;
@@ -480,34 +397,12 @@ Sarah.Cache = {};
         }
     };
 
+    // https://github.com/marcuswestin/store.js/blob/master/store.js
 
-}(Sarah));
+    Utils.Store = {};
 
-
-(function(H, Cache) {
-
-    Cache.bindElement = {};
-
-    H.registerHelper('bindElement', function(element, attrs, options) {
-        if (attrs.fn) {
-            options = attrs;
-            attrs = '';
-        }
-        var id = Sarah.Utils.genId();
-        Cache.bindElement[id] = this;
-        return '<' + element + ' data-binding="' + id + '" ' + attrs + '>' + options.fn(this) + '</' + element + '>';
-    });
-
-})(Handlebars, Sarah.Cache);
-
-Sarah.Utils.Store = {};
-
-// https://github.com/marcuswestin/store.js/blob/master/store.js
-
-;
-(function(win) {
     var store = {},
-        doc = win.document,
+        doc = document,
         localStorageName = 'localStorage',
         namespace = '__storejs__',
         storage
@@ -544,10 +439,6 @@ Sarah.Utils.Store = {};
             return value || undefined
         }
     }
-
-    // Functions to encapsulate questionable FireFox 3.6.13 behavior
-    // when about.config::dom.storage.enabled === false
-    // See https://github.com/marcuswestin/store.js/issues#issue/13
 
     function isLocalStorageNameSupported() {
         try {
@@ -586,16 +477,6 @@ Sarah.Utils.Store = {};
     } else if (doc.documentElement.addBehavior) {
         var storageOwner,
             storageContainer
-            // Since #userData storage applies only to specific paths, we need to
-            // somehow link our data to a specific path.  We choose /favicon.ico
-            // as a pretty safe option, since all browsers already make a request to
-            // this URL anyway and being a 404 will not hurt us here.  We wrap an
-            // iframe pointing to the favicon in an ActiveXObject(htmlfile) object
-            // (see: http://msdn.microsoft.com/en-us/library/aa752574(v=VS.85).aspx)
-            // since the iframe access rules appear to allow direct access and
-            // manipulation of the document element, even for a 404 page.  This
-            // document can be used instead of the current document (which would
-            // have been limited to the current path) to perform #userData storage.
         try {
             storageContainer = new ActiveXObject('htmlfile')
             storageContainer.open()
@@ -604,8 +485,6 @@ Sarah.Utils.Store = {};
             storageOwner = storageContainer.w.frames[0].document
             storage = storageOwner.createElement('div')
         } catch (e) {
-            // somehow ActiveXObject instantiation failed (perhaps some special
-            // security settings or otherwse), fall back to per-path storage
             storage = doc.createElement('div')
             storageOwner = doc.body
         }
@@ -614,8 +493,6 @@ Sarah.Utils.Store = {};
             return function() {
                 var args = Array.prototype.slice.call(arguments, 0)
                 args.unshift(storage)
-                // See http://msdn.microsoft.com/en-us/library/ms531081(v=VS.85).aspx
-                // and http://msdn.microsoft.com/en-us/library/ms531424(v=VS.85).aspx
                 storageOwner.appendChild(storage)
                 storage.addBehavior('#default#userData')
                 storage.load(localStorageName)
@@ -625,7 +502,6 @@ Sarah.Utils.Store = {};
             }
         }
 
-        // In IE7, keys may not contain special chars. See all of https://github.com/marcuswestin/store.js/issues/40
         var forbiddenCharsRegex = new RegExp("[!\"#$%&'()*+,/\\\\:;<=>?@[\\]^`{|}~]", "g")
 
             function ieKeyFix(key) {
@@ -683,51 +559,25 @@ Sarah.Utils.Store = {};
     } else if (typeof define === 'function' && define.amd) {
         define(store)
     } else {
-        Sarah.Utils.Store = store
+        Utils.Store = store
     }
 
-})(this.window || global);
 
-// http://timeago.yarp.com/
+    // http://timeago.yarp.com/
 
-/**
- * Timeago is a jQuery plugin that makes it easy to support automatically
- * updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
- *
- * @name timeago
- * @version 1.3.0
- * @requires jQuery v1.2.3+
- * @author Ryan McGeary
- * @license MIT License - http://www.opensource.org/licenses/mit-license.php
- *
- * For usage and examples, visit:
- * http://timeago.yarp.com/
- *
- * Copyright (c) 2008-2013, Ryan McGeary (ryan -[at]- mcgeary [*dot*] org)
- */
-
-(function(factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery', 'handlebars'], factory);
-    } else {
-        // Browser globals
-        factory(Sarah.Utils, Handlebars);
-    }
-}(function(u, Hbs) {
-    u.timeAgo = function(timestamp) {
+    Utils.timeAgo = function(timestamp) {
         if (timestamp instanceof Date) {
             return inWords(timestamp);
         } else if (typeof timestamp === "string") {
-            return inWords(u.timeAgo.parse(timestamp));
+            return inWords(Utils.timeAgo.parse(timestamp));
         } else if (typeof timestamp === "number") {
             return inWords(new Date(timestamp));
         } else {
-            return inWords(u.timeAgo.datetime(timestamp));
+            return inWords(Utils.timeAgo.datetime(timestamp));
         }
     };
 
-    u.timeAgo = _.extend(u.timeAgo, {
+    Utils.timeAgo = _.extend(Utils.timeAgo, {
         settings: {
             refreshMillis: 60000,
             allowFuture: false,
@@ -804,12 +654,8 @@ Sarah.Utils.Store = {};
         }
     });
 
-    Hbs.registerHelper('timeAgo', function(date) {
-        return u.timeAgo(date);
-    });
-
     function inWords(date) {
-        return u.timeAgo.inWords(distance(date));
+        return Utils.timeAgo.inWords(distance(date));
     }
 
     function distance(date) {
@@ -819,23 +665,32 @@ Sarah.Utils.Store = {};
     // fix for IE6 suckage
     document.createElement("abbr");
     document.createElement("time");
-}));
 
-Handlebars.registerHelper("debug", function(optionalValue) {
-    console.log("Current Context");
-    console.log("====================");
-    console.log(this);
-
-    if (optionalValue) {
-        console.log("Value");
-        console.log("====================");
-        console.log(optionalValue);
-    }
-});
-
-(function(hbs) {
-
+    Cache.bindElement = {};
     _.each({
+        timeAgo: function(date) {
+            return Utils.timeAgo(date);
+        },
+        debug: function(optionalValue) {
+            console.log("Current Context");
+            console.log("====================");
+            console.log(this);
+
+            if (optionalValue) {
+                console.log("Value");
+                console.log("====================");
+                console.log(optionalValue);
+            }
+        },
+        bindElement: function(element, attrs, options) {
+            if (attrs.fn) {
+                options = attrs;
+                attrs = '';
+            }
+            var id = Utils.genId();
+            Cache.bindElement[id] = this;
+            return '<' + element + ' data-binding="' + id + '" ' + attrs + '>' + options.fn(this) + '</' + element + '>';
+        },
         and: _and = function(testA, testB, options) {
             if (testA && testB) {
                 return options.fn(this);
@@ -977,11 +832,20 @@ Handlebars.registerHelper("debug", function(optionalValue) {
             return '<' + tag + ' class="sortable" data-prop="' + prop + '"">' + title + chevron + '</' + tag + '>';
         }
     }, function(fn, name) {
-        hbs.registerHelper(name, fn);
-    })
-})(Handlebars);
+        Handlebars.registerHelper(name, fn);
+    });
+
+    Utils.getTemplateVars = function(html) {
+        return _.uniq(_.compact(_.flatten((html.match(/\{\{#?[\w].+?\}\}|\{\{#if?[\w].+?\}\}/g) || []).map(function(hash) {
+            return hash.replace(/#[\w.]+\s/, '').split(' ');
+        })).map(function(word) {
+            return word.replace(/\{\{|\}\}/g, '').replace('../', '');
+        }).map(function(word) {
+            return word.indexOf('"') > -1 || word.indexOf("'") > -1 || _.keys(Handlebars.helpers).indexOf(word) > -1 || word === 'else' ? undefined : word
+        })));
+    }
+})(Handlebars, Sarah);
 
 window.onbeforeunload = function(event) {
-    Sarah.Utils.Store.set('___session___', Session.data);
-    return message;
+    Utils.Store.set('___session___', Session.data);
 }
