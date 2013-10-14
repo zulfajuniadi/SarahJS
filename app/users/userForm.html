@@ -1,0 +1,15 @@
+<% if(state !== 'view') { %>
+    <form>
+        <% if(state === 'edit') { %>
+            <input type="hidden" name="_id" value="<%= user._id %>">
+        <% } %>
+        <label for="username">
+            Username : <input type="text" name="name" id="username" value="<%= user.name %>">
+        </label>
+        <button type="submit">Save</button>
+    </form>
+<% } else { %>
+    <label for="username">
+        Username : <input type="text" name="name" id="username" value="<%= user.name %>" readonly>
+    </label>
+<% } %>
