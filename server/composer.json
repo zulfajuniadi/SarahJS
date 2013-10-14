@@ -1,7 +1,0 @@
-{
-    "require": {
-        "gabordemooij/redbean": "v3.4.4",
-        "slim/slim": "2.3.1",
-        "entomb/slim-json-api": "dev-master"
-    }
-}
