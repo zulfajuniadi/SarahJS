@@ -1,0 +1,12 @@
+<h1>Users</h1>
+<ul>
+    <% _.each(users, function(user, idx) { %>
+        <li>
+            <%- user.name %>
+            <button <%= bind(user) %> class="details">View</button>
+            <button <%= bind(user) %> class="edit">Edit</button>
+            <button <%= bind(user) %> class="delete">Delete</button>
+        </li>
+    <% }) %>
+</ul>
+<a href="#/user/new">New User</a>
