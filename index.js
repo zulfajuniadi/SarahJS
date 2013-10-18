@@ -18,6 +18,7 @@ requirejs(['sarah', 'lodash'], function(app){
         rootUrl : '',
         base : 'lib/SarahJS/',
         plugins : ['session.localstorage', 'db.localstorage'],
-        depsInterval : 200
+        depsInterval : 200,
+        debug : true
     });
 });
