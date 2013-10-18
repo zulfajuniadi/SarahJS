@@ -1,16 +1,18 @@
-require.config({
+/* we use window.requirejs because require conflicts with node-webkit require function */
+
+requirejs.config({
     paths: {
         /* SarahJS Required libraries */
         "lodash" : "lib/lodash",
         "text" : "lib/text.min",
 
         /* SarahJS Modules */
-        "sarah" : "lib/SarahJS/sarah.min",
-        "sarah.modules" : "lib/SarahJS/sarah.modules.min",
+        "sarah" : "lib/SarahJS/sarah",
+        "sarah.modules" : "lib/SarahJS/sarah.modules",
     }
 });
 
-require(['sarah', 'lodash'], function(app){
+requirejs(['sarah', 'lodash'], function(app){
     app.Configure({
         app : 'app/app.js',
         rootUrl : '',
