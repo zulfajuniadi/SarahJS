@@ -1,15 +1,29 @@
-{{#isnt state 'view'}}
-    <form>
-        {{#is state 'edit'}}
-            <input type="hidden" name="_id" value="{{user._id}}">
-        {{/is}}
+<!-- Using SarahJS, we can use the same form template for details, edit and create view -->
+
+<h1 class="heading">
+    {{state}} User
+</h1>
+
+<div class="wrapper">
+    <!-- Custom block helpers. View lib/SarahJS/plugins/template.handlebars.js for more helpers -->
+    {{#isnt state 'view'}}
+        <form class="form">
+            {{#is state 'edit'}}
+                <input type="hidden" name="_id" value="{{user._id}}">
+            {{/is}}
+            <label for="username">
+                Username : 
+            </label>
+            <input type="text" {{bind}} name="name" id="username" required="required" value="{{user.name}}">
+            <button class="button button-green" type="submit">Save</button> <a href="#/" class="button button-blue">Back</a>
+        </form>
+    {{else}}
+    <div class="form">
         <label for="username">
-            Username : <input type="text" name="name" id="username" value="{{user.name}}">
+            Username : 
         </label>
-        <button type="submit">Save</button>
-    </form>
-{{else}}
-    <label for="username">
-        Username : <input type="text" name="name" id="username" value="{{user.name}}" readonly>
-    </label>
-{{/isnt}}
+        <input type="text" {{bind}} name="name" id="username" value="{{user.name}}" readonly>
+        <a href="#/" class="button button-blue">Back</a>
+    </div>
+    {{/isnt}}
+</div>

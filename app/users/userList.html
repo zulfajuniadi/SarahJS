@@ -1,12 +1,21 @@
-<h1>Users</h1>
-<ul>
-    {{#each users}}
-        <li>
-            {{user.name}}
-            <button {{bind}} class="details">View</button>
-            <button {{bind}} class="edit">Edit</button>
-            <button {{bind}} class="delete">Delete</button>
-        </li>
-    {{/each}}
-</ul>
-<a href="#/user/new">New User</a>
+<h1 class="heading">Users</h1>
+<div class="wrapper">
+    <ul class="users">
+        <!-- Basic block helpers. View lib/SarahJS/plugins/template.handlebars.js for more helpers -->
+        {{#each users}}
+            <li>
+                <div class="userName">
+                    {{name}}
+                </div>
+                <!-- The bind method is used to 'bind' data to an element. Any callbacks for events triggered on this 
+                     element will have it's context (this) bound to the data -->
+                <button {{bind}} class="button button-green details">View</button>
+                <button {{bind}} class="button button-blue edit">Edit</button>
+                <button {{bind}} class="button button-red delete">Delete</button>
+            </li>
+        {{/each}}
+    </ul>
+
+    <!-- In order to play nicely with history.pushState, all routes must start with a hash # -->
+    <a class="button button-green" href="#/user/new">New User</a>
+</div>
