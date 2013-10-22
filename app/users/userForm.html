@@ -1,15 +1,15 @@
-<% if(state !== 'view') { %>
+{{#isnt state 'view'}}
     <form>
-        <% if(state === 'edit') { %>
-            <input type="hidden" name="_id" value="<%= user._id %>">
-        <% } %>
+        {{#is state 'edit'}}
+            <input type="hidden" name="_id" value="{{user._id}}">
+        {{/is}}
         <label for="username">
-            Username : <input type="text" name="name" id="username" value="<%= user.name %>">
+            Username : <input type="text" name="name" id="username" value="{{user.name}}">
         </label>
         <button type="submit">Save</button>
     </form>
-<% } else { %>
+{{else}}
     <label for="username">
-        Username : <input type="text" name="name" id="username" value="<%= user.name %>" readonly>
+        Username : <input type="text" name="name" id="username" value="{{user.name}}" readonly>
     </label>
-<% } %>
+{{/isnt}}
