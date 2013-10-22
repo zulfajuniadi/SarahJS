@@ -66,6 +66,22 @@ define(['sarah'], function(app){
                     }
                 }).setOutlet('#outlet');
             }
+        },
+
+        /* Use this to define a function to call before parsing the module config */
+
+        preInit : function() {
+
+            /* this function context is this module config */
+            console.log(this);
+        },
+
+        /* Use this to define a function to call after parsing the module config */
+
+        postInit : function() {
+
+            /* Set default route to '/users' */
+            app.Router('*', this.routes['/users']);
         }
     }
 });
