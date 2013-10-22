@@ -1,7 +1,19 @@
 #SarahJS
----
 
 A reactive Javascript Framework for the masses.
+
+What it is:
+
+1. Reactive by design. Changes to template data are rendered automatically.
+1. Pluggable. Mostly mutable functions. Using [RequireJS](http://), you can easily override core functionality and have it your way.
+1. Modular. Keep your modules apart from the other modules. This promotes better code reuse and less 'messy' directory structure.
+1. Super simple API. DRY as a desert.
+
+Whats it going to be:
+
+1. A full back-end and front-end framework that marries serverside-technology (Currently PHP and NodeJS is shortlisted) with front-end awesomeness.
+1. Fully documented - Soon =)
+1. Fully Unit Tested - Sooner.
 
 ### Loading Chronology
 
