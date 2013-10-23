@@ -16,6 +16,9 @@ requirejs.config({
 
         /* Uncomment if using jQuery */
         // "jquery" : "lib/jquery"
+
+        /* Uncomment if using Zepto */
+        "jquery" : "lib/zepto"
     },
     shim: {
         'lodash' : {
@@ -32,6 +35,11 @@ requirejs.config({
         // 'jquery': {
         //     exports: '$'
         // }
+
+        /* Uncomment if using zepto */
+        'jquery': {
+            exports: '$'
+        }
     }
 });
 
