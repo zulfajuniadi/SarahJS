@@ -2,6 +2,7 @@
 /* we use window.requirejs because require conflicts with node-webkit require function */
 
 requirejs.config({
+    baseUrl : 'SarahJS/',
     paths: {
         /* SarahJS Required libraries */
         "lodash" : "lib/lodash",
@@ -39,7 +40,7 @@ requirejs(['sarah'], function(app){
     app.Configure({
 
         /* The main application startup file */
-        app : 'app/app.js',
+        app : 'SarahJS/app/app.js',
         
         /* The base path which SarahJS is located on */
         base : 'lib/SarahJS/',
