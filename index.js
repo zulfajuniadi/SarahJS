@@ -57,7 +57,7 @@ requirejs(['sarah'], function(app){
         plugins : ['session.localstorage', 'collection.localstorage', 'template.handlebars'],
 
         /* Dependency checking interval */
-        depsInterval : 100,
+        depsInterval : 200,
 
         /* If set to true, a SarahJS's instance can be referenced from window.Sarah */
         debug : true
