@@ -24,5 +24,5 @@ define([
 
     /* Go to default route */
 
-    app.Router('#/');
+    // app.Router('#/');
 });
