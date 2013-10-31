@@ -14,6 +14,7 @@ define([
      */
 
     /* Let's load the users module */
+    'sarah.modules!tasks',
     'sarah.modules!users',
     // 'sarah.modules!anotherModule'
 ], function(app){
@@ -21,6 +22,8 @@ define([
     /* Anything here will be ran after successful load of all modules. */
 
     console.log('All modules loaded!');
+
+    console.log(app);
 
     /* Go to default route */
 

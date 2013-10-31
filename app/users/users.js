@@ -15,7 +15,11 @@ define(['sarah'], function(app){
             
             Users : {
 
-                /* 'plugins' are what plugins the collection uses */
+                /** 
+                 * 'plugins' are what plugins the collection uses. Plugins related to collections are placed inside the
+                 * lib/SarahJS/plugins directory with the names starting with collection. Collection plugins are loaded
+                 * in the index.js file.
+                 */
                 plugins : {
 
                     /* Here we use localstorage */
@@ -127,8 +131,8 @@ define(['sarah'], function(app){
 
             '/users' : function() {
 
-                /* This is where we set the template's attributes, based on routes */
-                app.Templates.userList.attributes({
+                /* This is where we set the template's setAttributes, based on routes */
+                app.Templates.userList.setAttributes({
 
                     /**
                      * Notice that the users property is referencing an anonymous function. This is where SarahJS's
@@ -154,7 +158,7 @@ define(['sarah'], function(app){
                 app.Templates.userList.setOutlet('#outlet');
             },
             '/user/new' : function() {
-                app.Templates.userForm.attributes({
+                app.Templates.userForm.setAttributes({
 
                     /**
                      * If the value is static (non-changing) we can just pass this to the template and it will render
@@ -170,7 +174,7 @@ define(['sarah'], function(app){
              * first argument.
              */
             '/user/:_id' : function(_id) {
-                app.Templates.userForm.attributes({
+                app.Templates.userForm.setAttributes({
                     state : 'view',
                     user : function(){
 
@@ -184,7 +188,7 @@ define(['sarah'], function(app){
                 }).setOutlet('#outlet');
             },
             '/user/edit/:_id' : function(_id) {
-                app.Templates.userForm.attributes({
+                app.Templates.userForm.setAttributes({
                     state : 'edit',
                     user : function(){
                         return app.Collections.Users.get(_id) || {};
@@ -206,7 +210,19 @@ define(['sarah'], function(app){
         postInit : function() {
 
             /* This is how we set the default route */
-            app.Router('*', this.routes['/users']);
+            app.Router('*', this.routes['/users'], this);
+        },
+
+        /* Use this to define a function to call when a user enters this module's routes */
+
+        onEnter : function() {
+            console.log('wheeee!');
+        },
+
+        /* Use this to define a function to call when a user leaves this module's routes */
+
+        onLeave : function() {
+            console.log('awwww yisss');
         }
     }
 });
