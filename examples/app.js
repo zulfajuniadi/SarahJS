@@ -14,7 +14,6 @@ define([
      */
 
     /* Let's load the users module */
-    'sarah.modules!tasks',
     'sarah.modules!users',
     // 'sarah.modules!anotherModule'
 ], function(app){
